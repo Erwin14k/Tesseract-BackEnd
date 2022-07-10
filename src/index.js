@@ -13,7 +13,7 @@ API.use(Express.urlencoded({extended:false}));
 
 //For security reasons we need to add Cors Middleware.
 API.use(CorsMiddleWare());
-API.use("/v1",RequestHandler);
+API.use("/api/v1",RequestHandler);
 
 API.listen(appPort, () => {
     displayServerRunningMessage(appPort);
