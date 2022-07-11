@@ -1,21 +1,23 @@
 const Express = require("express");
-const CorsMiddleWare=require("cors");
-const{initializeDB}=require("./lib/db");
-const RequestHandler = require("./lib/Handlers/ToDos");
-const API = Express();
-const appPort = 3000;
+const RequestHandler = require("./handlers/todos");
+const cors = require("cors");
+
+const { initializeDB } = require("./db");
 const {
-    displayServerRunningMessage,
-    displayDBInitializedMessage,
+  displayServerRunningMessage,
+  displayDBInitializedMessage,
 } = require("./utils/prompt");
-API.use(Express.json());
-API.use(Express.urlencoded({extended:false}));
 
-//For security reasons we need to add Cors Middleware.
-API.use(CorsMiddleWare());
-API.use("/api/v1",RequestHandler);
+const appPort = 3000;
+const App = Express();
 
-API.listen(appPort, () => {
-    displayServerRunningMessage(appPort);
-    initializeDB().then(displayDBInitializedMessage);
+App.use(Express.json());
+App.use(Express.urlencoded({ extended: false }));
+
+App.use(cors());
+App.use("/api/v1", RequestHandler);
+
+App.listen(appPort, () => {
+  displayServerRunningMessage(appPort);
+  initializeDB().then(displayDBInitializedMessage);
 });
