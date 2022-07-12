@@ -31,6 +31,7 @@ RequestHandler.post("/to-dos", async (request, response) => {
     //Obtain the actual date, to apply in the ToDo Creation.
     var today = new Date();
     var date = today.getDate()+"/"+(today.getMonth()+1)+"/"+today.getFullYear();
+    var time= new Date().toLocaleString('en-GB', { timeZone: 'UTC' });
 
     const newTodo = await dbHandler.run(`
         INSERT INTO ToDos (title, description, is_done,date_of_creation,date_of_update)
@@ -38,7 +39,7 @@ RequestHandler.post("/to-dos", async (request, response) => {
             '${title}',
             '${description}',
             ${is_done},
-            '${date}',
+            '${time}',
             ''
         )
     `);
@@ -66,6 +67,7 @@ RequestHandler.patch("/to-dos/:id", async (request, response) => {
     );
     var today = new Date();
     var date = today.getDate()+"/"+(today.getMonth()+1)+"/"+today.getFullYear();
+    var time= new Date().toLocaleString('en-GB', { timeZone: 'UTC' });
 
     await dbHandler.run(
       `UPDATE ToDos SET title = ?, description = ?, is_done = ?,date_of_update=?
@@ -73,7 +75,7 @@ RequestHandler.patch("/to-dos/:id", async (request, response) => {
       title || todoToUpdate.title,
       description || todoToUpdate.description,
       is_done !== undefined ? is_done : todoToUpdate.is_done,
-      date,
+      time,
       todoId
     );
 
